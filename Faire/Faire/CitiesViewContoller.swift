@@ -19,6 +19,8 @@ class CitiesViewContoller: UIViewController {
         cities.fetchCitiesList()
         citiesTableView.delegate = self
         citiesTableView.dataSource = self
+        
+        self.title = "Cities ☀️"
     }
 }
 
@@ -47,6 +49,9 @@ extension CitiesViewContoller: UITableViewDelegate {
 
 extension CitiesViewContoller: CitiesDelegate {
     func fetchCities(cities: [City]?) {
-        self.citiesList = cities
+        DispatchQueue.main.async { [weak self] in
+            self?.citiesList = cities
+            self?.citiesTableView.reloadData()
+        }
     }
 }

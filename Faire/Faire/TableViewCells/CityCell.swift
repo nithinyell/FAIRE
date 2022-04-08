@@ -20,6 +20,7 @@ class CityCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
+        self.accessoryType = .disclosureIndicator
         configureUI()
     }
     
