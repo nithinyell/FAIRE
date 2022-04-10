@@ -22,21 +22,35 @@ class FaireUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    func testAppLaunch() {
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+    
+    func testTableView() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        let table = app.tables.element(boundBy: 0)
+        let lastCell = table.cells.element(boundBy: table.cells.count-1)
+        table.scrollToElement(element: lastCell)
+    }
+}
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+extension XCUIElement {
+
+    func scrollToElement(element: XCUIElement) {
+        while !element.visible() {
+            swipeUp()
         }
     }
+
+    func visible() -> Bool {
+        guard self.exists && !self.frame.isEmpty else { return false }
+        return XCUIApplication().windows.element(boundBy: 0).frame.contains(self.frame)
+    }
+    
+    func forceTap() {
+           coordinate(withNormalizedOffset: CGVector(dx:0.5, dy:0.5)).tap()
+       }
 }
