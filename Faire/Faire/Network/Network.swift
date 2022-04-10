@@ -15,6 +15,7 @@ enum HTTPMethod: String {
 
 struct Network {
     func buildRequest<T: Decodable>(_ request: URLRequest) -> AnyPublisher<T, Error> {
+        print("\(request)")
         let dataTaskPublisher = URLSession.shared.dataTaskPublisher(for: request)
             .map {$0.data}
             .decode(type: T.self, decoder: JSONDecoder())

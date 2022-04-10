@@ -19,8 +19,17 @@ class CitiesViewContoller: UIViewController {
         cities.fetchCitiesList()
         citiesTableView.delegate = self
         citiesTableView.dataSource = self
-        
+        citiesTableView.backgroundColor = .systemGroupedBackground
         self.title = "Cities ☀️"
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpNavigationBar()
+    }
+    
+    private func setUpNavigationBar() {
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
 
@@ -44,6 +53,12 @@ extension CitiesViewContoller: UITableViewDataSource {
 extension CitiesViewContoller: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        if let detailsViewController = self.storyboard?.instantiateViewController(withIdentifier: "WeatherDetailViewController") as? WeatherDetailViewController {
+            DispatchQueue.main.async { [weak self] in
+                detailsViewController.city = self?.citiesList?[indexPath.row]
+                self?.navigationController?.pushViewController(detailsViewController, animated: true)
+            }
+        }
     }
 }
 
