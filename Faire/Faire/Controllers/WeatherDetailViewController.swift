@@ -45,6 +45,13 @@ class WeatherDetailViewController: UIViewController {
         return label
     }()
     
+    lazy var loader: UIActivityIndicatorView = {
+        var loader = UIActivityIndicatorView()
+        loader = UIActivityIndicatorView(style: .large)
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        return loader
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,6 +64,10 @@ class WeatherDetailViewController: UIViewController {
         self.view.addSubview(temperature)
         self.view.addSubview(detailTableView)
         self.view.addSubview(noteLabel)
+        self.view.addSubview(loader)
+        
+        self.loader.center = self.view.center
+        loader.startAnimating()
         
         detailTableView.backgroundColor = .systemGroupedBackground
         detailTableView.delegate = self
@@ -70,12 +81,17 @@ class WeatherDetailViewController: UIViewController {
         
         let model = CityDetailsViewModel()
         model.cityWeatherDetailsDelegate = CityWeatherDetails()
-        model.weatherDetails("\(city?.id ?? 0)")?.sink(receiveCompletion: { completion in
+        model.weatherDetails("\(city?.id ?? 0)")?.sink(receiveCompletion: {[weak self] completion in
             switch completion {
             case .finished:
                 print("")
             case .failure(_):
-                print("")
+                self?.fetchDetailsFailed()
+            }
+            
+            DispatchQueue.main.async {
+                self?.loader.stopAnimating()
+                self?.loader.hidesWhenStopped = true
             }
         }, receiveValue: { [weak self] weatherInfo in
             self?.weatherInfo = weatherInfo
@@ -83,8 +99,6 @@ class WeatherDetailViewController: UIViewController {
     }
     
     private func buildUI() {
-        print("***", weatherInfo)
-        
         guard let info = self.weatherInfo, let consolidatedWeather = info.consolidatedWeather.first else {return}
         
         DispatchQueue.main.async { [weak self] in
@@ -105,7 +119,7 @@ class WeatherDetailViewController: UIViewController {
                 self.noteLabel.leadingAnchor.constraint(equalTo: self.temperature.leadingAnchor),
                 self.noteLabel.trailingAnchor.constraint(equalTo: self.temperature.trailingAnchor),
                 self.noteLabel.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -10),
-                self.noteLabel.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.10)
+                self.noteLabel.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.10),
             ])
             
             var weatherDetails  = consolidatedWeather.weatherStateName + " with " + Constants.getTemperature(from: consolidatedWeather.theTemp)
@@ -119,6 +133,19 @@ class WeatherDetailViewController: UIViewController {
             self.detailTableViewContent.append("Predictability: \(Int(consolidatedWeather.predictability))")
             
             self.detailTableView.reloadData()
+        }
+    }
+    
+    func fetchDetailsFailed() {
+        DispatchQueue.main.async { [weak self] in
+            
+            let alert = UIAlertController(title: "Retry", message: "Failed to Load Details", preferredStyle: UIAlertController.Style.alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [weak self] (action: UIAlertAction!) in
+                self?.loadDetails()
+            }))
+            
+            self?.present(alert, animated: true, completion: nil)
         }
     }
 }
