@@ -32,6 +32,7 @@ class WeatherDetailViewController: UIViewController {
     
     lazy var detailTableView: UITableView = {
         let tableView = UITableView()
+        tableView.allowsSelection = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
