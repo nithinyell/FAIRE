@@ -22,3 +22,6 @@
 * Checked in source code into `GIT`
 
 ### ScreenShort Referene
+![](https://github.com/nithinyell/FAIRE/blob/main/Faire/Simulator%20Screen%20Shot%20-%20iPod%20touch%20(7th%20generation)%20-%202022-04-10%20at%2010.34.02.png)
+![](https://github.com/nithinyell/FAIRE/blob/main/Faire/Simulator%20Screen%20Shot%20-%20iPod%20touch%20(7th%20generation)%20-%202022-04-10%20at%2010.34.07.png)
+![](https://github.com/nithinyell/FAIRE/blob/main/Faire/Simulator%20Screen%20Shot%20-%20iPod%20touch%20(7th%20generation)%20-%202022-04-10%20at%2010.34.29.png)
