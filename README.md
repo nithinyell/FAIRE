@@ -40,3 +40,4 @@
 
 ## Data Models
 ---
+![](https://github.com/nithinyell/FAIRE/blob/main/Faire/DataModels.png)
