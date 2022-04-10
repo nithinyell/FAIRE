@@ -6,7 +6,6 @@
 3. [ScreenShort Reference](#screenshort-reference)
 4. [Design Patterns](#design-patterns)
 5. [Data Models](#data-models)
-6. [Class Interaction](#class-interaction)
 
 ## Agenda
 ---
@@ -37,9 +36,7 @@
 
 ## Design Patterns
 ---
+![](https://github.com/nithinyell/FAIRE/blob/main/Faire/MVVM.png)
 
 ## Data Models
 ---
-
-## Class Interaction
---
